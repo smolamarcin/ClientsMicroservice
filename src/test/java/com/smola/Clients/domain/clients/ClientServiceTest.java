@@ -63,6 +63,8 @@ public class ClientServiceTest {
 
         assertThat(updatedClient.getAddresses().size()).isEqualTo(3);
         assertThat(updatedClient.getAddresses()).contains(addressToAdd);
+
+        verify(clientRepository).save(updatedClient);
     }
 
     @Test(expected = ClientAlreadyExistsException.class)

@@ -49,6 +49,7 @@ class ClientServiceImpl implements ClientService {
         Client found = clientRepository.findByEmail(clientEmail)
                 .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND_EXCEPTION_MESSAGE));
         found.addAddress(address);
+        clientRepository.save(found);
         return found;
     }
 }
