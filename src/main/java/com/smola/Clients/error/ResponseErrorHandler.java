@@ -15,16 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 @ControllerAdvice
-@RestController
 class ResponseErrorHandler extends ResponseEntityExceptionHandler {
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), "Validation Failed",
-                ex.getBindingResult().toString());
-        return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(UserAlreadyExistsException.class)
     public final ResponseEntity<Object> handleUserExistsException(UserAlreadyExistsException ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),

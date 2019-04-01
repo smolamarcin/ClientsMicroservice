@@ -39,7 +39,7 @@ public class Address {
     }
 
     public ZipCode getZipCode() {
-        return new ZipCode(zipCode.getZipCode());
+        return zipCode;
     }
 
     public Integer getHouseNumber() {

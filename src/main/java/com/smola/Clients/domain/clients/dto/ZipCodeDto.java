@@ -9,7 +9,7 @@ class ZipCodeDto {
         this.zipCode = zipCode;
     }
 
-    String getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
