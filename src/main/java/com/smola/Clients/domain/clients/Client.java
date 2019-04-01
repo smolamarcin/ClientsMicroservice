@@ -1,6 +1,5 @@
 package com.smola.Clients.domain.clients;
 
-import com.smola.Clients.domain.clients.dto.AddressDto;
 
 import javax.persistence.*;
 import java.util.*;
@@ -21,7 +20,7 @@ public class Client {
     @JoinColumn(name = "address_id")
     private List<Address> addresses = new ArrayList<>();
 
-    public void addAddress(Address address) {
+    void addAddress(Address address) {
         addresses.add(address);
     }
     public void addAddresses(Collection<Address> addresses){
@@ -64,8 +63,7 @@ public class Client {
     }
 
 
-    public static class ClientBuilder {
-        private Long id;
+    static class ClientBuilder {
         private String firstName;
         private String secondName;
         private String email;
@@ -74,37 +72,36 @@ public class Client {
         private ClientBuilder() {
         }
 
-        public static ClientBuilder aClient() {
+        static ClientBuilder aClient() {
             return new ClientBuilder();
         }
 
-        public ClientBuilder withFirstName(String firstName) {
+        ClientBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public ClientBuilder withSecondName(String secondName) {
+        ClientBuilder withSecondName(String secondName) {
             this.secondName = secondName;
             return this;
         }
 
-        public ClientBuilder withEmail(String email) {
+        ClientBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public ClientBuilder withAddresses(List<Address> addresses) {
+        ClientBuilder withAddresses(List<Address> addresses) {
             this.addresses = new ArrayList<>(addresses);
             return this;
         }
 
-        public Client build() {
+        Client build() {
             Client client = new Client();
             client.email = this.email;
             client.addresses = this.addresses;
             client.firstName = this.firstName;
             client.secondName = this.secondName;
-            client.id = this.id;
             return client;
         }
     }

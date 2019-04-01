@@ -1,7 +1,5 @@
 package com.smola.Clients.domain.clients;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -44,28 +42,12 @@ public class Address {
         return zipCode;
     }
 
-    public void setZipCode(ZipCode zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
-    }
-
     public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(Integer houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
     public String getCity() {
         return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     @Override
