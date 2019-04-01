@@ -3,13 +3,13 @@ package com.smola.Clients.domain.clients.dto;
 
 import java.util.Objects;
 
-class AddressDto {
+public final class AddressDto {
     private ZipCodeDto zipCode;
     private String streetName;
     private Integer houseNumber;
     private String city;
 
-    AddressDto(ZipCodeDto zipCode, String streetName, Integer houseNumber, String city) {
+    public AddressDto(ZipCodeDto zipCode, String streetName, Integer houseNumber, String city) {
         this.zipCode = zipCode;
         this.streetName = streetName;
         this.houseNumber = houseNumber;

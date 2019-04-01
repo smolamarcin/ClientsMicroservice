@@ -1,7 +1,6 @@
 package com.smola.Clients.domain.clients;
 
 
-import com.smola.Clients.domain.clients.dto.ClientConverter;
 import com.smola.Clients.domain.clients.dto.ClientDto;
 import com.smola.Clients.exceptions.UserAlreadyExistsException;
 import com.smola.Clients.exceptions.UserNotFoundException;

@@ -1,11 +1,11 @@
-package com.smola.Clients.domain.clients.dto;
+package com.smola.Clients.domain.clients;
 
-import com.smola.Clients.domain.clients.Address;
-import com.smola.Clients.domain.clients.Client;
+import com.smola.Clients.domain.clients.dto.AddressDto;
+import com.smola.Clients.domain.clients.dto.ClientDto;
 
 import java.util.List;
 
-public class ClientConverter{
+class ClientConverter{
     public static ClientDto toDto(Client client) {
         return ClientDto.ClientDtoBuilder.aClientDto()
                 .withFirstName(client.getFirstName())

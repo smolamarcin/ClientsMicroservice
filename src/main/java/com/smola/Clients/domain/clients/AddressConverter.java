@@ -1,6 +1,6 @@
-package com.smola.Clients.domain.clients.dto;
+package com.smola.Clients.domain.clients;
 
-import com.smola.Clients.domain.clients.Address;
+import com.smola.Clients.domain.clients.dto.AddressDto;
 
 import java.util.ArrayList;
 import java.util.List;

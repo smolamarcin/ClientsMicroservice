@@ -1,6 +1,5 @@
 package com.smola.Clients.domain.clients;
 
-import com.smola.Clients.domain.clients.dto.ClientConverter;
 import com.smola.Clients.domain.clients.dto.ClientDto;
 
 import java.util.Arrays;

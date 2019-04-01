@@ -26,7 +26,7 @@ public final class ClientDto {
         return Collections.unmodifiableList(addresses);
     }
 
-    static final class ClientDtoBuilder {
+    public static final class ClientDtoBuilder {
         private String firstName;
         private String secondName;
         private String email;
@@ -35,31 +35,31 @@ public final class ClientDto {
         private ClientDtoBuilder() {
         }
 
-        static ClientDtoBuilder aClientDto() {
+        public static ClientDtoBuilder aClientDto() {
             return new ClientDtoBuilder();
         }
 
-        ClientDtoBuilder withFirstName(String firstName) {
+        public ClientDtoBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        ClientDtoBuilder withSecondName(String secondName) {
+        public ClientDtoBuilder withSecondName(String secondName) {
             this.secondName = secondName;
             return this;
         }
 
-        ClientDtoBuilder withEmail(String email) {
+        public ClientDtoBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        ClientDtoBuilder withAddresses(List<AddressDto> addresses) {
+        public ClientDtoBuilder withAddresses(List<AddressDto> addresses) {
             this.addresses = addresses;
             return this;
         }
 
-        ClientDto build() {
+        public ClientDto build() {
             ClientDto clientDto = new ClientDto();
             clientDto.email = this.email;
             clientDto.firstName = this.firstName;

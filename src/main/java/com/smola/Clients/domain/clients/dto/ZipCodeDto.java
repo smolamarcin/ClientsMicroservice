@@ -2,10 +2,10 @@ package com.smola.Clients.domain.clients.dto;
 
 import java.util.Objects;
 
-class ZipCodeDto {
+public final class ZipCodeDto {
     private final String zipCode;
 
-    ZipCodeDto(String zipCode) {
+    public ZipCodeDto(String zipCode) {
         this.zipCode = zipCode;
     }
 
