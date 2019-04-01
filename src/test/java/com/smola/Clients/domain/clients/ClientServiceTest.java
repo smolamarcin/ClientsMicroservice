@@ -1,12 +1,15 @@
 package com.smola.Clients.domain.clients;
 
+import com.smola.Clients.domain.clients.dto.ClientDto;
 import com.smola.Clients.domain.exceptions.UserNotFoundException;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 
+import static com.smola.Clients.domain.clients.ClientsProvider.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,21 +18,9 @@ public class ClientServiceTest {
 
     private ClientService clientService;
     private ClientRepository clientRepository;
-    private Client FIRST_CLIENT;
-    private Client SECOND_CLIENT;
 
-    @BeforeMethod
+    @Before
     public void setUp() {
-        FIRST_CLIENT = Client.ClientBuilder.aClient()
-                .withFirstName("Marcin")
-                .withSecondName("Smola")
-                .build();
-        FIRST_CLIENT.addAddresses(Arrays.asList(new Address("Krakow"), new Address("Wroclaw")));
-        SECOND_CLIENT = Client.ClientBuilder.aClient()
-                .withFirstName("Jan")
-                .withSecondName("Kowalski")
-                .build();
-        SECOND_CLIENT.addAddresses(Arrays.asList(new Address("Krakow"), new Address("Wroclaw")));
         clientRepository = mock(ClientRepository.class);
         clientService = new ClientServiceImpl(clientRepository);
     }
@@ -38,11 +29,12 @@ public class ClientServiceTest {
     public void shouldRetrieveAllClients() {
         when(clientRepository.findAll()).thenReturn(Arrays.asList(FIRST_CLIENT, SECOND_CLIENT));
 
-        assertThat(clientService.getAllClients().size()).isEqualTo(2);
-        assertThat(clientService.getAllClients()).contains(FIRST_CLIENT, SECOND_CLIENT);
+        Collection<ClientDto> allClients = clientService.getAllClients();
+        assertThat(allClients.size()).isEqualTo(2);
+        assertThat(allClients).contains(FIRST_CLIENT_DTO, SECOND_CLIENT_DTO);
     }
 
-    @Test(expectedExceptions = UserNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     public void shouldThrowException_whenTryToUpdateNonExistingClient() {
         String nonExistingClientEmail = "asdasd@gmail.com";
         when(clientRepository.findByEmail(nonExistingClientEmail)).thenReturn(Optional.empty());

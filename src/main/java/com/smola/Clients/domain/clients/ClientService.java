@@ -1,9 +1,12 @@
 package com.smola.Clients.domain.clients;
 
+import com.smola.Clients.domain.clients.dto.ClientDto;
+
 import java.util.Collection;
+import java.util.List;
 
 public interface ClientService {
-    Collection<Client> getAllClients();
+    List<ClientDto> getAllClients();
 
     Client createClient(Client client);
 

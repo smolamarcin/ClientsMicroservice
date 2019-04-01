@@ -1,14 +1,13 @@
 package com.smola.Clients.domain.clients;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.smola.Clients.domain.clients.dto.AddressDto;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity(name = "Client")
 @Table(name = "client")
-class Client {
-    @JsonIgnore
+public class Client {
     @Id
     @GeneratedValue
     private Long id;
@@ -18,12 +17,12 @@ class Client {
     private String secondName;
 
     private String email;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private List<Address> addresses = new ArrayList<>();
 
     public void addAddress(Address address) {
         addresses.add(address);
-        address.setClient(this);
     }
     public void addAddresses(Collection<Address> addresses){
         addresses.forEach(this::addAddress);
@@ -34,7 +33,7 @@ class Client {
     }
 
     public List<Address> getAddresses() {
-        return addresses;
+        return Collections.unmodifiableList(addresses);
     }
 
     public Long getId() {
@@ -65,10 +64,12 @@ class Client {
     }
 
 
-    public static final class ClientBuilder {
+    public static class ClientBuilder {
+        private Long id;
         private String firstName;
         private String secondName;
         private String email;
+        private List<Address> addresses = new ArrayList<>();
 
         private ClientBuilder() {
         }
@@ -92,12 +93,21 @@ class Client {
             return this;
         }
 
+        public ClientBuilder withAddresses(List<Address> addresses) {
+            this.addresses = new ArrayList<>(addresses);
+            return this;
+        }
+
         public Client build() {
             Client client = new Client();
-            client.secondName = this.secondName;
-            client.firstName = this.firstName;
             client.email = this.email;
+            client.addresses = this.addresses;
+            client.firstName = this.firstName;
+            client.secondName = this.secondName;
+            client.id = this.id;
             return client;
         }
     }
+
+
 }

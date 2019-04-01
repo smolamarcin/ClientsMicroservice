@@ -1,10 +1,15 @@
 package com.smola.Clients.domain.clients;
 
+import com.smola.Clients.domain.clients.dto.ClientDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
+
+import static org.springframework.http.ResponseEntity.created;
 
 @RestController
 class ClientsEndpoint {
@@ -16,13 +21,13 @@ class ClientsEndpoint {
     }
 
     @GetMapping("/clients")
-    ResponseEntity<Collection<Client>> getAllClients() {
+    ResponseEntity<List<ClientDto>> getAllClients() {
         return ResponseEntity.ok(clientService.getAllClients());
     }
 
-    @PostMapping("/clientsxd")
+    @PostMapping("/clients")
     ResponseEntity<Client> createClient(@RequestBody Client client) {
-        return ResponseEntity.ok(clientService.createClient(client));
+        return new ResponseEntity<>(client, HttpStatus.CREATED);
     }
 
     @PutMapping("/clients/{clientEmail}")
