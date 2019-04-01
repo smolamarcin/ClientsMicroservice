@@ -3,7 +3,7 @@ package com.smola.Clients.domain.clients;
 
 import com.smola.Clients.domain.clients.dto.ClientDto;
 import com.smola.Clients.exceptions.ClientAlreadyExistsException;
-import com.smola.Clients.exceptions.UserNotFoundException;
+import com.smola.Clients.exceptions.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ class ClientServiceImpl implements ClientService {
     @Override
     public Client addAddressToClient(Address address, String clientEmail) {
         Client found = clientRepository.findByEmail(clientEmail)
-                .orElseThrow(() -> new UserNotFoundException(CLIENT_NOT_FOUND_EXCEPTION_MESSAGE));
+                .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND_EXCEPTION_MESSAGE));
         found.addAddress(address);
         return found;
     }

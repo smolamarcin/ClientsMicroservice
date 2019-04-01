@@ -1,7 +1,7 @@
 package com.smola.Clients.error;
 
 import com.smola.Clients.exceptions.ClientAlreadyExistsException;
-import com.smola.Clients.exceptions.UserNotFoundException;
+import com.smola.Clients.exceptions.ClientNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,7 +21,7 @@ class ResponseErrorHandler extends ResponseEntityExceptionHandler {
 
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(ClientNotFoundException.class)
     public final ResponseEntity<Object> handleUserNotFoundExceptio(ClientAlreadyExistsException ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 request.getDescription(false));

@@ -2,7 +2,7 @@ package com.smola.Clients.domain.clients;
 
 import com.smola.Clients.domain.clients.dto.ClientDto;
 import com.smola.Clients.exceptions.ClientAlreadyExistsException;
-import com.smola.Clients.exceptions.UserNotFoundException;
+import com.smola.Clients.exceptions.ClientNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,8 +12,8 @@ import java.util.Optional;
 
 import static com.smola.Clients.domain.clients.ClientsProvider.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.*;
 
 public class ClientServiceTest {
     private ClientService clientService;
@@ -34,12 +34,20 @@ public class ClientServiceTest {
         assertThat(allClients).contains(FIRST_CLIENT_DTO, SECOND_CLIENT_DTO);
     }
 
-    @Test(expected = UserNotFoundException.class)
+    @Test(expected = ClientNotFoundException.class)
     public void shouldThrowException_whenTryToUpdateNonExistingClient() {
         String nonExistingClientEmail = "asdasd@gmail.com";
         when(clientRepository.findByEmail(nonExistingClientEmail)).thenReturn(Optional.empty());
 
         clientService.addAddressToClient(new Address("Krakow"), nonExistingClientEmail);
+    }
+
+    @Test
+    public void shouldCreateNewClient() {
+        when(clientRepository.findByEmail(FIRST_CLIENT.getEmail())).thenReturn(Optional.empty());
+        clientService.createClient(FIRST_CLIENT);
+
+        verify(clientRepository).save(FIRST_CLIENT);
     }
 
     @Test
