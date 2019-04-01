@@ -2,7 +2,7 @@ package com.smola.Clients.domain.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smola.Clients.domain.clients.dto.ClientDto;
-import com.smola.Clients.exceptions.UserAlreadyExistsException;
+import com.smola.Clients.exceptions.ClientAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.smola.Clients.domain.clients.ClientsProvider.*;
-import static com.smola.Clients.exceptions.ExceptionMessages.USER_ALREADY_EXISTS_EXCEPTION_MESSAGE;
+import static com.smola.Clients.exceptions.ExceptionMessages.CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -79,7 +79,7 @@ public class ClientsEndpointTest {
 
     @Test
     public void shouldReturnHttp409_whenUserAlreadyExists() throws Exception {
-        when(clientService.createClient(FIRST_CLIENT)).thenThrow(new UserAlreadyExistsException(USER_ALREADY_EXISTS_EXCEPTION_MESSAGE));
+        when(clientService.createClient(FIRST_CLIENT)).thenThrow(new ClientAlreadyExistsException(CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE));
 
         String json = clientJson
                 .write(FIRST_CLIENT).getJson();

@@ -1,7 +1,7 @@
 package com.smola.Clients.domain.clients;
 
 import com.smola.Clients.domain.clients.dto.ClientDto;
-import com.smola.Clients.exceptions.UserAlreadyExistsException;
+import com.smola.Clients.exceptions.ClientAlreadyExistsException;
 import com.smola.Clients.exceptions.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class ClientServiceTest {
         assertThat(updatedClient.getAddresses()).contains(addressToAdd);
     }
 
-    @Test(expected = UserAlreadyExistsException.class)
+    @Test(expected = ClientAlreadyExistsException.class)
     public void shouldThrowException_whenUserAlreadyExists() {
         when(clientRepository.findByEmail(FIRST_CLIENT.getEmail())).thenReturn(Optional.of(FIRST_CLIENT));
 
