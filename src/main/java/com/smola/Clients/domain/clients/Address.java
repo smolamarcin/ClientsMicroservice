@@ -16,7 +16,7 @@ public class Address {
     private Integer houseNumber;
     private String city;
 
-    public Address(ZipCode zipCode, String streetName, Integer houseNumber, String city) {
+    Address(ZipCode zipCode, String streetName, Integer houseNumber, String city) {
         this.zipCode = zipCode;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -26,7 +26,7 @@ public class Address {
     Address() {
     }
 
-    public Address(String streetName) {
+    Address(String streetName) {
         this.streetName = streetName;
     }
 
@@ -39,7 +39,7 @@ public class Address {
     }
 
     public ZipCode getZipCode() {
-        return zipCode;
+        return new ZipCode(zipCode.getZipCode());
     }
 
     public Integer getHouseNumber() {

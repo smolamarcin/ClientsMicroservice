@@ -1,6 +1,5 @@
 package com.smola.Clients.domain.clients.dto;
 
-import com.smola.Clients.domain.clients.ZipCode;
 
 import java.util.Objects;
 
@@ -10,20 +9,15 @@ class AddressDto {
     private Integer houseNumber;
     private String city;
 
-    public void setZipCode(ZipCodeDto zipCode) {
+    AddressDto(ZipCodeDto zipCode, String streetName, Integer houseNumber, String city) {
         this.zipCode = zipCode;
-    }
-
-    public void setHouseNumber(Integer houseNumber) {
+        this.streetName = streetName;
         this.houseNumber = houseNumber;
-    }
-
-    public void setCity(String city) {
         this.city = city;
     }
 
     public ZipCodeDto getZipCode() {
-        return zipCode;
+        return new ZipCodeDto(zipCode.getZipCode());
     }
 
     public Integer getHouseNumber() {
@@ -36,10 +30,6 @@ class AddressDto {
 
     public String getStreetName() {
         return streetName;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
     }
 
     @Override

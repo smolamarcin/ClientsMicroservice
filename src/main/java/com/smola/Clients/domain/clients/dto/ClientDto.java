@@ -1,7 +1,5 @@
 package com.smola.Clients.domain.clients.dto;
 
-import com.smola.Clients.domain.clients.Address;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +26,7 @@ public final class ClientDto {
         return Collections.unmodifiableList(addresses);
     }
 
-    public static final class ClientDtoBuilder {
+    static final class ClientDtoBuilder {
         private String firstName;
         private String secondName;
         private String email;
@@ -37,31 +35,31 @@ public final class ClientDto {
         private ClientDtoBuilder() {
         }
 
-        public static ClientDtoBuilder aClientDto() {
+        static ClientDtoBuilder aClientDto() {
             return new ClientDtoBuilder();
         }
 
-        public ClientDtoBuilder withFirstName(String firstName) {
+        ClientDtoBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public ClientDtoBuilder withSecondName(String secondName) {
+        ClientDtoBuilder withSecondName(String secondName) {
             this.secondName = secondName;
             return this;
         }
 
-        public ClientDtoBuilder withEmail(String email) {
+        ClientDtoBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public ClientDtoBuilder withAddresses(List<AddressDto> addresses) {
+        ClientDtoBuilder withAddresses(List<AddressDto> addresses) {
             this.addresses = addresses;
             return this;
         }
 
-        public ClientDto build() {
+        ClientDto build() {
             ClientDto clientDto = new ClientDto();
             clientDto.email = this.email;
             clientDto.firstName = this.firstName;

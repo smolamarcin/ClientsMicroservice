@@ -40,7 +40,8 @@ class ClientServiceImpl implements ClientService {
 
     @Override
     public Client addAddressToClient(Address address, String clientEmail) {
-        Client found = clientRepository.findByEmail(clientEmail).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE));
+        Client found = clientRepository.findByEmail(clientEmail)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE));
         found.addAddress(address);
         return found;
     }
