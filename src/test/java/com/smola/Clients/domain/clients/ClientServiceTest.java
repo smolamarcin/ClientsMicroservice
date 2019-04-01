@@ -1,7 +1,8 @@
 package com.smola.Clients.domain.clients;
 
 import com.smola.Clients.domain.clients.dto.ClientDto;
-import com.smola.Clients.domain.exceptions.UserNotFoundException;
+import com.smola.Clients.exceptions.UserAlreadyExistsException;
+import com.smola.Clients.exceptions.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +16,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ClientServiceTest {
-
     private ClientService clientService;
     private ClientRepository clientRepository;
 
@@ -55,5 +55,12 @@ public class ClientServiceTest {
 
         assertThat(updatedClient.getAddresses().size()).isEqualTo(3);
         assertThat(updatedClient.getAddresses()).contains(addressToAdd);
+    }
+
+    @Test(expected = UserAlreadyExistsException.class)
+    public void shouldThrowException_whenUserAlreadyExists() {
+        when(clientRepository.findByEmail(FIRST_CLIENT.getEmail())).thenReturn(Optional.of(FIRST_CLIENT));
+
+        clientService.createClient(FIRST_CLIENT);
     }
 }

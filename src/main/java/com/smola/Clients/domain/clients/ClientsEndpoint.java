@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
-
-import static org.springframework.http.ResponseEntity.created;
 
 @RestController
 class ClientsEndpoint {
@@ -27,7 +24,7 @@ class ClientsEndpoint {
 
     @PostMapping("/clients")
     ResponseEntity<Client> createClient(@RequestBody Client client) {
-        return new ResponseEntity<>(client, HttpStatus.CREATED);
+        return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
     }
 
     @PutMapping("/clients/{clientEmail}")

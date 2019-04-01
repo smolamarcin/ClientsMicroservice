@@ -9,6 +9,9 @@ class AddressConverter{
     public static AddressDto toDto(Address address){
         AddressDto addressDto = new AddressDto();
         addressDto.setStreetName(address.getStreetName());
+        addressDto.setCity(address.getCity());
+        addressDto.setHouseNumber(address.getHouseNumber());
+        addressDto.setZipCode(ZipCodeConverter.toDto(address.getZipCode()));
         return addressDto;
     }
 

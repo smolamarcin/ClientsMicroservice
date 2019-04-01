@@ -1,4 +1,4 @@
-package com.smola.Clients.domain.exceptions;
+package com.smola.Clients.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

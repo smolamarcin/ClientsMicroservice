@@ -2,6 +2,7 @@ package com.smola.Clients.domain.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smola.Clients.domain.clients.dto.ClientDto;
+import com.smola.Clients.exceptions.UserAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,14 +19,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.smola.Clients.domain.clients.ClientsProvider.FIRST_CLIENT_DTO;
-import static com.smola.Clients.domain.clients.ClientsProvider.SECOND_CLIENT_DTO;
+import static com.smola.Clients.domain.clients.ClientsProvider.*;
+import static com.smola.Clients.exceptions.ExceptionMessages.USER_ALREADY_EXISTS_EXCEPTION_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ClientsEndpoint.class)
@@ -34,11 +36,13 @@ public class ClientsEndpointTest {
     @MockBean
     private ClientService clientService;
 
+    @MockBean
+    private ClientRepository clientRepository;
     @Autowired
     private MockMvc mockMvc;
 
     private JacksonTester<List<ClientDto>> jsonResultClients;
-    private JacksonTester<ClientDto> clientDtoJson;
+    private JacksonTester<Client> clientJson;
 
     @Before
     public void setUpJsonTester() {
@@ -60,16 +64,32 @@ public class ClientsEndpointTest {
 
     @Test
     public void shouldCreateNewClient() throws Exception {
-        String json = clientDtoJson
-                .write(FIRST_CLIENT_DTO).getJson();
+        String json = clientJson
+                .write(FIRST_CLIENT).getJson();
 
         MockHttpServletResponse response = mockMvc
                 .perform(post("/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
+                .andDo(print())
                 .andReturn()
                 .getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+    }
 
+    @Test
+    public void shouldReturnHttp409_whenUserAlreadyExists() throws Exception {
+        when(clientService.createClient(FIRST_CLIENT)).thenThrow(new UserAlreadyExistsException(USER_ALREADY_EXISTS_EXCEPTION_MESSAGE));
+
+        String json = clientJson
+                .write(FIRST_CLIENT).getJson();
+        MockHttpServletResponse response = mockMvc
+                .perform(post("/clients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andDo(print())
+                .andReturn()
+                .getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
     }
 }
