@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity(name = "Address")
 @Table(name = "address")
-public class Address extends BaseEntity {
+class Address extends BaseEntity {
     @Embedded
     private ZipCode zipCode;
     private String streetName;

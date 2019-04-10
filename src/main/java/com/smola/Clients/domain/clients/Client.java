@@ -6,7 +6,7 @@ import java.util.*;
 
 @Entity(name = "Client")
 @Table(name = "client")
-public class Client extends BaseEntity{
+class Client extends BaseEntity{
 
     private String firstName;
 

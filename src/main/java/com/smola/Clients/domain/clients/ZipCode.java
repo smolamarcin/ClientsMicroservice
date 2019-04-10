@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class ZipCode {
+class ZipCode {
     private String zipCode;
 
     ZipCode() {
