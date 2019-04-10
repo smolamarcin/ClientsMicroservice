@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-public class ClientsEndpointTest extends IntegrationTestBase {
+public class ClientsEndpointIT extends IntegrationTestBase {
 
     @Autowired
     private ClientService clientService;

@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class ClientsApplicationTests {
+public class ClientsApplicationTestsIT {
 
     @Test
     public void contextLoads() {
