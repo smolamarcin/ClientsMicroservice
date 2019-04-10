@@ -30,11 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 public class ClientsEndpointIT extends IntegrationTestBase {
 
-    @Autowired
-    private ClientService clientService;
-
-    @Autowired
-    private ClientRepository clientRepository;
+    public static final String CLIENTS_ENDPOINT = "/clients";
     @Autowired
     private MockMvc mockMvc;
 
@@ -51,20 +47,19 @@ public class ClientsEndpointIT extends IntegrationTestBase {
         createClient(FIRST_CLIENT);
         String json = clientJson
                 .write(FIRST_CLIENT).getJson();
-        MockHttpServletResponse response = mockMvc
-                .perform(post("/clients")
+
+        mockMvc.perform(post(CLIENTS_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andDo(print())
-                .andReturn()
-                .getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+                .andExpect(status().isConflict());
     }
 
     @Test
     public void shouldCreateNewClientAndReturnProperJsonResponse() throws Exception {
         JsonContent<Client> client = clientJson.write(FIRST_CLIENT);
-        mockMvc.perform(post("/clients")
+
+        mockMvc.perform(post(CLIENTS_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(client.getJson()))
                 .andDo(print())
@@ -79,14 +74,14 @@ public class ClientsEndpointIT extends IntegrationTestBase {
         createClient(FIRST_CLIENT);
         createClient(SECOND_CLIENT);
 
-        mockMvc.perform(get("/clients"))
+        mockMvc.perform(get(CLIENTS_ENDPOINT))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(("$"), hasSize(2)));
     }
 
     private void createClient(Client client) throws Exception {
-        mockMvc.perform(post("/clients")
+        mockMvc.perform(post(CLIENTS_ENDPOINT)
                 .content(clientJson.write(client).getJson())
                 .contentType(MediaType.APPLICATION_JSON));
     }
