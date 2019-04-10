@@ -6,21 +6,22 @@ import java.util.*;
 
 @Entity(name = "Client")
 @Table(name = "client")
-class Client extends BaseEntity{
+class Client extends BaseEntity {
 
     private String firstName;
 
     private String secondName;
 
     private String email;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private List<Address> addresses = new ArrayList<>();
 
     void addAddress(Address address) {
         addresses.add(address);
     }
-    public void addAddresses(Collection<Address> addresses){
+
+    public void addAddresses(Collection<Address> addresses) {
         addresses.forEach(this::addAddress);
     }
 
@@ -40,7 +41,6 @@ class Client extends BaseEntity{
     public String getSecondName() {
         return secondName;
     }
-
 
 
     static class ClientBuilder {

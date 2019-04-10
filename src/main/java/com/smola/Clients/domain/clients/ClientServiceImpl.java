@@ -15,6 +15,7 @@ import static com.smola.Clients.exceptions.ExceptionMessages.CLIENT_NOT_FOUND_EX
 import static java.util.stream.Collectors.toList;
 
 @Service
+@Transactional
 class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
@@ -23,7 +24,6 @@ class ClientServiceImpl implements ClientService {
         this.clientRepository = clientRepository;
     }
 
-    @Transactional
     @Override
     public List<ClientDto> getAllClients() {
         List<Client> allClients = clientRepository.findAll();
@@ -50,6 +50,8 @@ class ClientServiceImpl implements ClientService {
     public Client addAddressToClient(Address address, String clientEmail) {
         Client found = clientRepository.findByEmail(clientEmail)
                 .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND_EXCEPTION_MESSAGE));
+        System.err.println(address);
+        System.err.println(found);
         found.addAddress(address);
         clientRepository.save(found);
         return found;

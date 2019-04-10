@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.smola.Clients.domain.clients.ClientsProvider.FIRST_CLIENT;
 import static com.smola.Clients.domain.clients.ClientsProvider.SECOND_CLIENT;
@@ -34,8 +35,11 @@ public class ClientsEndpointIT extends IntegrationTestBase {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ClientRepository clientRepository;
     private JacksonTester<List<ClientDto>> jsonResultClients;
     private JacksonTester<Client> clientJson;
+    private JacksonTester<Address> addressJson;
 
     @BeforeEach
     public void setUpJsonTester() {
@@ -49,8 +53,8 @@ public class ClientsEndpointIT extends IntegrationTestBase {
                 .write(FIRST_CLIENT).getJson();
 
         mockMvc.perform(post(CLIENTS_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
@@ -78,6 +82,21 @@ public class ClientsEndpointIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(("$"), hasSize(2)));
+    }
+
+    @Test
+    public void shouldAddNewAddresToClient() throws Exception {
+
+        createClient(FIRST_CLIENT);
+        mockMvc.perform(post(CLIENTS_ENDPOINT + "/" + FIRST_CLIENT.getEmail())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(addressJson.write(new Address("Warszawa")).getJson()))
+                .andDo(print());
+
+        Optional<Client> updatedClient = clientRepository.findByEmail(FIRST_CLIENT.getEmail());
+
+        assertThat(updatedClient).isNotEmpty();
+        assertThat(updatedClient.get().getAddresses()).hasSize(3);
     }
 
     private void createClient(Client client) throws Exception {
