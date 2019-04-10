@@ -6,6 +6,7 @@ import com.smola.Clients.exceptions.ClientAlreadyExistsException;
 import com.smola.Clients.exceptions.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ class ClientServiceImpl implements ClientService {
         this.clientRepository = clientRepository;
     }
 
+    @Transactional
     @Override
     public List<ClientDto> getAllClients() {
         List<Client> allClients = clientRepository.findAll();

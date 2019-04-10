@@ -1,45 +1,45 @@
 package com.smola.Clients.domain.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smola.Clients.config.ClientAppConfig;
 import com.smola.Clients.domain.clients.dto.ClientDto;
-import com.smola.Clients.exceptions.ClientAlreadyExistsException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.json.JsonContent;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.smola.Clients.domain.clients.ClientsProvider.*;
-import static com.smola.Clients.exceptions.ExceptionMessages.CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ClientsEndpoint.class)
-public class ClientsEndpointTest {
+public class ClientsEndpointTest extends IntegrationTestBase {
 
-    @MockBean
+    @Autowired
     private ClientService clientService;
 
-    @MockBean
+    @Autowired
     private ClientRepository clientRepository;
     @Autowired
     private MockMvc mockMvc;
@@ -49,41 +49,12 @@ public class ClientsEndpointTest {
 
     @BeforeEach
     public void setUpJsonTester() {
-        initMocks(this);
         JacksonTester.initFields(this, new ObjectMapper());
     }
 
     @Test
-    public void shouldRetrieveAllClients() throws Exception {
-        when(clientService.getAllClients()).thenReturn(Arrays.asList(FIRST_CLIENT_DTO, SECOND_CLIENT_DTO));
-        MockHttpServletResponse response = mockMvc.perform(get("/clients"))
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(OK.value());
-
-        assertThat(response.getContentAsString()).isEqualTo(jsonResultClients.write(Arrays.asList(FIRST_CLIENT_DTO, SECOND_CLIENT_DTO)).getJson());
-    }
-
-    @Test
-    public void shouldCreateNewClient() throws Exception {
-        String json = clientJson
-                .write(FIRST_CLIENT).getJson();
-
-        MockHttpServletResponse response = mockMvc
-                .perform(post("/clients")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andDo(print())
-                .andReturn()
-                .getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-    }
-
-    @Test
     public void shouldReturnHttp409_whenUserAlreadyExists() throws Exception {
-        when(clientService.createClient(any())).thenThrow(new ClientAlreadyExistsException(CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE));
-
+        createClient(FIRST_CLIENT);
         String json = clientJson
                 .write(FIRST_CLIENT).getJson();
         MockHttpServletResponse response = mockMvc
@@ -94,5 +65,35 @@ public class ClientsEndpointTest {
                 .andReturn()
                 .getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+    }
+
+    @Test
+    public void shouldCreateNewClientAndReturnProperJsonResponse() throws Exception {
+        JsonContent<Client> client = clientJson.write(FIRST_CLIENT);
+        mockMvc.perform(post("/clients")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(client.getJson()))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.email", is(FIRST_CLIENT.getEmail())));
+
+
+    }
+
+    @Test
+    public void shouldRetrieveAllUsers_afterCreation() throws Exception {
+        createClient(FIRST_CLIENT);
+        createClient(SECOND_CLIENT);
+
+        mockMvc.perform(get("/clients"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(("$"), hasSize(2)));
+    }
+
+    private void createClient(Client client) throws Exception {
+        mockMvc.perform(post("/clients")
+                .content(clientJson.write(client).getJson())
+                .contentType(MediaType.APPLICATION_JSON));
     }
 }
