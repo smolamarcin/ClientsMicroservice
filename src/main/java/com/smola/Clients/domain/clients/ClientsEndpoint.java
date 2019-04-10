@@ -1,5 +1,6 @@
 package com.smola.Clients.domain.clients;
 
+import com.smola.Clients.domain.clients.dto.AddressDto;
 import com.smola.Clients.domain.clients.dto.ClientDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,12 @@ class ClientsEndpoint {
     }
 
     @PostMapping("/clients")
-    ResponseEntity<Client> createClient(@RequestBody Client client) {
-        return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
+    ResponseEntity<Client> createClient(@RequestBody ClientDto clientDto) {
+        return new ResponseEntity<>(clientService.createClient(clientDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/clients/{clientEmail}")
-    ResponseEntity<Client> addNewAddress(@PathVariable String clientEmail, @RequestBody Address address) {
+    ResponseEntity<Client> addNewAddress(@PathVariable String clientEmail, @RequestBody AddressDto address) {
         return new ResponseEntity<>(clientService.addAddressToClient(address, clientEmail), HttpStatus.OK);
     }
 }

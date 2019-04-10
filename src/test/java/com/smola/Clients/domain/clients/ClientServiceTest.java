@@ -39,15 +39,15 @@ public class ClientServiceTest {
         String nonExistingClientEmail = "asdasd@gmail.com";
         when(clientRepository.findByEmail(nonExistingClientEmail)).thenReturn(Optional.empty());
 
-        assertThatExceptionOfType(ClientNotFoundException.class).isThrownBy(() -> clientService.addAddressToClient(new Address("Krakow"), nonExistingClientEmail));
+        assertThatExceptionOfType(ClientNotFoundException.class).isThrownBy(() -> clientService.addAddressToClient(AddressConverter.toDto(new Address("Krakow")), nonExistingClientEmail));
     }
 
     @Test
     public void shouldCreateNewClient() {
         when(clientRepository.findByEmail(FIRST_CLIENT.getEmail())).thenReturn(Optional.empty());
-        clientService.createClient(FIRST_CLIENT);
+        clientService.createClient(FIRST_CLIENT_DTO);
 
-        verify(clientRepository).save(FIRST_CLIENT);
+        verify(clientRepository).save(any());
     }
 
     @Test
@@ -55,11 +55,10 @@ public class ClientServiceTest {
         Address addressToAdd = new Address("asdad");
 
         String firstClientAddress = "marcin@smola.com";
-
         when(clientRepository.findByEmail(firstClientAddress)).thenReturn(Optional.of(FIRST_CLIENT));
 
 
-        Client updatedClient = clientService.addAddressToClient(addressToAdd, firstClientAddress);
+        Client updatedClient = clientService.addAddressToClient(AddressConverter.toDto(addressToAdd), firstClientAddress);
 
         assertThat(updatedClient.getAddresses().size()).isEqualTo(3);
         assertThat(updatedClient.getAddresses()).contains(addressToAdd);
@@ -71,6 +70,6 @@ public class ClientServiceTest {
     public void shouldThrowException_whenUserAlreadyExists() {
         when(clientRepository.findByEmail(FIRST_CLIENT.getEmail())).thenReturn(Optional.of(FIRST_CLIENT));
 
-        assertThatExceptionOfType(ClientAlreadyExistsException.class).isThrownBy(() -> clientService.createClient(FIRST_CLIENT));
+        assertThatExceptionOfType(ClientAlreadyExistsException.class).isThrownBy(() -> clientService.createClient(FIRST_CLIENT_DTO));
     }
 }

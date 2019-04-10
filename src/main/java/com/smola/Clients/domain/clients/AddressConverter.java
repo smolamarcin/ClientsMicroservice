@@ -11,6 +11,11 @@ class AddressConverter {
                 address.getStreetName(), address.getHouseNumber(), address.getCity());
     }
 
+    static Address toEntity(AddressDto addressDto) {
+        return new Address(ZipCodeConverter.toEntity(addressDto.getZipCode()),
+                addressDto.getStreetName(), addressDto.getHouseNumber(), addressDto.getCity());
+    }
+
     static List<AddressDto> toDto(List<Address> addresses) {
         List<AddressDto> dtos = new ArrayList<>();
         for (Address address : addresses) {
@@ -20,4 +25,12 @@ class AddressConverter {
         return dtos;
     }
 
+    public static List<Address> toEntity(List<AddressDto> clientDtoAddresses) {
+        List<Address> addresses = new ArrayList<>();
+        for (AddressDto clientDtoAddress : clientDtoAddresses) {
+            Address address = toEntity(clientDtoAddress);
+            addresses.add(address);
+        }
+        return addresses;
+    }
 }

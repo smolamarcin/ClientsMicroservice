@@ -8,4 +8,9 @@ class ZipCodeConverter {
         ZipCodeDto zipCodeDto = new ZipCodeDto(zipCode.getZipCode());
         return zipCodeDto;
     }
+
+    public static ZipCode toEntity(ZipCodeDto zipCodeDto) {
+        ZipCode zipCode = new ZipCode(zipCodeDto.getZipCode());
+        return zipCode;
+    }
 }

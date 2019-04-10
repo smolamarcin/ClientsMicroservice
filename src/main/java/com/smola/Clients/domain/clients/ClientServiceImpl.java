@@ -1,6 +1,7 @@
 package com.smola.Clients.domain.clients;
 
 
+import com.smola.Clients.domain.clients.dto.AddressDto;
 import com.smola.Clients.domain.clients.dto.ClientDto;
 import com.smola.Clients.exceptions.ClientAlreadyExistsException;
 import com.smola.Clients.exceptions.ClientNotFoundException;
@@ -34,7 +35,8 @@ class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client createClient(Client client) {
+    public Client createClient(ClientDto clientDto) {
+        Client client = ClientConverter.toEntity(clientDto);
         if (clientExists(client)) {
             throw new ClientAlreadyExistsException(CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         } else {
@@ -48,10 +50,11 @@ class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public Client addAddressToClient(Address address, String clientEmail) {
+    public Client addAddressToClient(AddressDto addressDto, String clientEmail) {
         Optional<Client> byEmail = clientRepository.findByEmail(clientEmail);
         Client found = byEmail
                 .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND_EXCEPTION_MESSAGE));
+        Address address = AddressConverter.toEntity(addressDto);
         found.addAddress(address);
         clientRepository.save(found);
         return found;
