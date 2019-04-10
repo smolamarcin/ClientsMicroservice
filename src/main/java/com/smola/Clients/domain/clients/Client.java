@@ -6,10 +6,7 @@ import java.util.*;
 
 @Entity(name = "Client")
 @Table(name = "client")
-public class Client {
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Client extends BaseEntity{
 
     private String firstName;
 
@@ -35,9 +32,6 @@ public class Client {
         return Collections.unmodifiableList(addresses);
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -47,20 +41,6 @@ public class Client {
         return secondName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return Objects.equals(firstName, client.firstName) &&
-                Objects.equals(secondName, client.secondName) &&
-                Objects.equals(addresses, client.addresses);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, secondName, addresses);
-    }
 
 
     static class ClientBuilder {

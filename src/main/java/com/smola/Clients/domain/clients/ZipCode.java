@@ -4,11 +4,11 @@ import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public
-class ZipCode {
+public class ZipCode {
     private String zipCode;
 
-    ZipCode() {}
+    ZipCode() {
+    }
 
     ZipCode(String zipCode) {
         this.zipCode = zipCode;

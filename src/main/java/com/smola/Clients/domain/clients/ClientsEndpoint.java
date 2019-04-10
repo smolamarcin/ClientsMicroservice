@@ -24,7 +24,8 @@ class ClientsEndpoint {
 
     @PostMapping("/clients")
     ResponseEntity<Client> createClient(@RequestBody Client client) {
-        return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
+        Client client1 = clientService.createClient(client);
+        return new ResponseEntity<>(client1, HttpStatus.CREATED);
     }
 
     @PutMapping("/clients/{clientEmail}")

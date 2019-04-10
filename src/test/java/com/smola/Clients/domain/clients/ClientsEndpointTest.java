@@ -22,6 +22,7 @@ import java.util.List;
 import static com.smola.Clients.domain.clients.ClientsProvider.*;
 import static com.smola.Clients.exceptions.ExceptionMessages.CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.HttpStatus.OK;
@@ -79,7 +80,7 @@ public class ClientsEndpointTest {
 
     @Test
     public void shouldReturnHttp409_whenUserAlreadyExists() throws Exception {
-        when(clientService.createClient(FIRST_CLIENT)).thenThrow(new ClientAlreadyExistsException(CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE));
+        when(clientService.createClient(any())).thenThrow(new ClientAlreadyExistsException(CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE));
 
         String json = clientJson
                 .write(FIRST_CLIENT).getJson();
