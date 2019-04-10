@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.smola.Clients.exceptions.ExceptionMessages.CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE;
 import static com.smola.Clients.exceptions.ExceptionMessages.CLIENT_NOT_FOUND_EXCEPTION_MESSAGE;
@@ -48,10 +49,9 @@ class ClientServiceImpl implements ClientService {
 
     @Override
     public Client addAddressToClient(Address address, String clientEmail) {
-        Client found = clientRepository.findByEmail(clientEmail)
+        Optional<Client> byEmail = clientRepository.findByEmail(clientEmail);
+        Client found = byEmail
                 .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND_EXCEPTION_MESSAGE));
-        System.err.println(address);
-        System.err.println(found);
         found.addAddress(address);
         clientRepository.save(found);
         return found;

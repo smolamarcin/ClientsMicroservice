@@ -22,8 +22,7 @@ import static com.smola.Clients.domain.clients.ClientsProvider.SECOND_CLIENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -86,17 +85,17 @@ public class ClientsEndpointIT extends IntegrationTestBase {
 
     @Test
     public void shouldAddNewAddresToClient() throws Exception {
-
         createClient(FIRST_CLIENT);
-        mockMvc.perform(post(CLIENTS_ENDPOINT + "/" + FIRST_CLIENT.getEmail())
+        Optional<Client> byEmail = clientRepository.findByEmail(FIRST_CLIENT.getEmail());
+        mockMvc.perform(put(CLIENTS_ENDPOINT + "/" + FIRST_CLIENT.getEmail())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(addressJson.write(new Address("Warszawa")).getJson()))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().isOk());
 
         Optional<Client> updatedClient = clientRepository.findByEmail(FIRST_CLIENT.getEmail());
 
         assertThat(updatedClient).isNotEmpty();
-        assertThat(updatedClient.get().getAddresses()).hasSize(3);
     }
 
     private void createClient(Client client) throws Exception {

@@ -24,12 +24,11 @@ class ClientsEndpoint {
 
     @PostMapping("/clients")
     ResponseEntity<Client> createClient(@RequestBody Client client) {
-        Client client1 = clientService.createClient(client);
-        return new ResponseEntity<>(client1, HttpStatus.CREATED);
+        return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
     }
 
     @PutMapping("/clients/{clientEmail}")
-    void addNewAddress(@PathVariable String clientEmail, @RequestBody Address address) {
-        clientService.addAddressToClient(address, clientEmail);
+    ResponseEntity<Client> addNewAddress(@PathVariable String clientEmail, @RequestBody Address address) {
+        return new ResponseEntity<>(clientService.addAddressToClient(address, clientEmail), HttpStatus.OK);
     }
 }
