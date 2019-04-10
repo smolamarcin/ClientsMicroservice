@@ -3,9 +3,10 @@ package com.smola.Clients.domain.clients;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smola.Clients.domain.clients.dto.ClientDto;
 import com.smola.Clients.exceptions.ClientAlreadyExistsException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,7 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(ClientsEndpoint.class)
 public class ClientsEndpointTest {
 
@@ -45,7 +47,7 @@ public class ClientsEndpointTest {
     private JacksonTester<List<ClientDto>> jsonResultClients;
     private JacksonTester<Client> clientJson;
 
-    @Before
+    @BeforeEach
     public void setUpJsonTester() {
         initMocks(this);
         JacksonTester.initFields(this, new ObjectMapper());
