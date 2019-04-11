@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController(value = "/clients")
 class ClientsEndpoint {
     private final ClientService clientService;
 
@@ -16,18 +16,18 @@ class ClientsEndpoint {
         this.clientService = clientService;
     }
 
-    @GetMapping("/clients")
+    @GetMapping
     ResponseEntity<List<Client>> getAllClients() {
         return ResponseEntity.ok(clientService.getAllClients());
     }
 
-    @PostMapping("/clients")
+    @PostMapping
     ResponseEntity<Client> createClient(@RequestBody Client client) {
         return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
     }
 
-    @PutMapping("/clients/{clientEmail}")
-    ResponseEntity<Client> addNewAddress(@PathVariable String clientEmail, @RequestBody Address address) {
+    @PutMapping
+    ResponseEntity<Client> addNewAddress(@RequestParam(name = "clientEmail") String clientEmail, @RequestBody Address address) {
         return new ResponseEntity<>(clientService.addAddressToClient(address, clientEmail), HttpStatus.OK);
     }
 }

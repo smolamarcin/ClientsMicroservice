@@ -1,7 +1,6 @@
 package com.smola.Clients.domain.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smola.Clients.domain.clients.dto.ClientDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,13 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 public class ClientsEndpointIT extends IntegrationTestBase {
 
-    public static final String CLIENTS_ENDPOINT = "/clients";
+    static final String CLIENTS_ENDPOINT = "/clients";
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ClientRepository clientRepository;
-    private JacksonTester<List<Client>> jsonResultClients;
     private JacksonTester<Client> clientJson;
     private JacksonTester<Address> addressJson;
 
@@ -69,7 +67,6 @@ public class ClientsEndpointIT extends IntegrationTestBase {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.email", is(FIRST_CLIENT.getEmail())));
 
-
     }
 
     @Test
@@ -86,8 +83,8 @@ public class ClientsEndpointIT extends IntegrationTestBase {
     @Test
     public void shouldAddNewAddresToClient() throws Exception {
         createClient(FIRST_CLIENT);
-        Optional<Client> byEmail = clientRepository.findByEmail(FIRST_CLIENT.getEmail());
-        mockMvc.perform(put(CLIENTS_ENDPOINT + "/" + FIRST_CLIENT.getEmail())
+        mockMvc.perform(put("/clients")
+                .param("clientEmail", FIRST_CLIENT.getEmail())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(addressJson.write(new Address("Warszawa")).getJson()))
                 .andDo(print())
