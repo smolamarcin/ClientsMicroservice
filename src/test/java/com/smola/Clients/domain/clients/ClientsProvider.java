@@ -4,7 +4,6 @@ package com.smola.Clients.domain.clients;
 import java.util.Arrays;
 
 class ClientsProvider {
-
     static final Client FIRST_CLIENT = Client.ClientBuilder.aClient()
             .withFirstName("Marcin")
             .withSecondName("Smola")

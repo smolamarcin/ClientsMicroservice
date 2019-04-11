@@ -30,6 +30,10 @@ abstract class BaseEntity implements Serializable {
         return id;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(uuid);
