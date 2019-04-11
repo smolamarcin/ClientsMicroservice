@@ -1,16 +1,11 @@
 package com.smola.Clients.domain.clients;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity(name = "Address")
 @Table(name = "address")
-@JsonSerialize(using = AddressSerializer.class)
-@JsonDeserialize(using = AddressDeserializer.class)
 class Address extends BaseEntity {
     @Embedded
     private ZipCode zipCode;

@@ -1,7 +1,5 @@
 package com.smola.Clients.domain.clients;
 
-import com.smola.Clients.domain.clients.dto.AddressDto;
-import com.smola.Clients.domain.clients.dto.ClientDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,7 @@
 package com.smola.Clients.domain.clients;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -11,7 +13,9 @@ import java.util.UUID;
 abstract class BaseEntity implements Serializable {
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
+    @JsonIgnore
     private String uuid = UUID.randomUUID().toString();
 
     @Override

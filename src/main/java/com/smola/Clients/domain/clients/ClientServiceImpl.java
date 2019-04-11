@@ -1,8 +1,6 @@
 package com.smola.Clients.domain.clients;
 
 
-import com.smola.Clients.domain.clients.dto.AddressDto;
-import com.smola.Clients.domain.clients.dto.ClientDto;
 import com.smola.Clients.exceptions.ClientAlreadyExistsException;
 import com.smola.Clients.exceptions.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
