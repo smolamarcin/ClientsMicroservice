@@ -1,11 +1,16 @@
 package com.smola.Clients.domain.clients;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity(name = "Client")
 @Table(name = "client")
+@JsonSerialize(using = ClientSserializer.class)
+@JsonDeserialize(using = ClientDeserializer.class)
 class Client extends BaseEntity {
 
     private String firstName;
