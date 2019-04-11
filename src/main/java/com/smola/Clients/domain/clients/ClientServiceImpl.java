@@ -27,16 +27,14 @@ class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ClientDto> getAllClients() {
+    public List<Client> getAllClients() {
         List<Client> allClients = clientRepository.findAll();
         return allClients.stream()
-                .map(ClientConverter::toDto)
                 .collect(toList());
     }
 
     @Override
-    public Client createClient(ClientDto clientDto) {
-        Client client = ClientConverter.toEntity(clientDto);
+    public Client createClient(Client client) {
         if (clientExists(client)) {
             throw new ClientAlreadyExistsException(CLIENT_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         } else {
@@ -50,11 +48,10 @@ class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public Client addAddressToClient(AddressDto addressDto, String clientEmail) {
+    public Client addAddressToClient(Address address, String clientEmail) {
         Optional<Client> byEmail = clientRepository.findByEmail(clientEmail);
         Client found = byEmail
                 .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND_EXCEPTION_MESSAGE));
-        Address address = AddressConverter.toEntity(addressDto);
         found.addAddress(address);
         clientRepository.save(found);
         return found;

@@ -19,17 +19,17 @@ class ClientsEndpoint {
     }
 
     @GetMapping("/clients")
-    ResponseEntity<List<ClientDto>> getAllClients() {
+    ResponseEntity<List<Client>> getAllClients() {
         return ResponseEntity.ok(clientService.getAllClients());
     }
 
     @PostMapping("/clients")
-    ResponseEntity<Client> createClient(@RequestBody ClientDto clientDto) {
-        return new ResponseEntity<>(clientService.createClient(clientDto), HttpStatus.CREATED);
+    ResponseEntity<Client> createClient(@RequestBody Client client) {
+        return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
     }
 
     @PutMapping("/clients/{clientEmail}")
-    ResponseEntity<Client> addNewAddress(@PathVariable String clientEmail, @RequestBody AddressDto address) {
+    ResponseEntity<Client> addNewAddress(@PathVariable String clientEmail, @RequestBody Address address) {
         return new ResponseEntity<>(clientService.addAddressToClient(address, clientEmail), HttpStatus.OK);
     }
 }

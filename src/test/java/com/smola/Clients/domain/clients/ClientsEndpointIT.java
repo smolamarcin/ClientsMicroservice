@@ -36,7 +36,7 @@ public class ClientsEndpointIT extends IntegrationTestBase {
 
     @Autowired
     private ClientRepository clientRepository;
-    private JacksonTester<List<ClientDto>> jsonResultClients;
+    private JacksonTester<List<Client>> jsonResultClients;
     private JacksonTester<Client> clientJson;
     private JacksonTester<Address> addressJson;
 
